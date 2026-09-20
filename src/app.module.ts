@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { createObserveModule } from '@nestjs/observe';
 import { PrismaService } from './prisma/prisma.service.js';
 import { CreateAccountController } from './controllers/create-account.controller.js';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './env.js';
 import { AuthModule } from './auth/auth.module.js';
+import { AuthenticateController } from './controllers/authenticate.controller.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -17,6 +18,6 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     AuthModule,
   ],
   providers: [PrismaService],
-  controllers: [CreateAccountController],
+  controllers: [CreateAccountController, AuthenticateController],
 })
 export class AppModule {}
