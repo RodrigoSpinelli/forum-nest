@@ -3,6 +3,7 @@
 /node_modules
 /build
 /generated
+/src/generated
 
 # TypeScript build cache
 *.tsbuildinfo
@@ -63,3 +64,9 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Data
 /data
+
+# Prisma editor skills (not required to run the app)
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
