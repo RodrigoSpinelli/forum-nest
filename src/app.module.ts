@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './env.js';
 import { AuthModule } from './auth/auth.module.js';
 import { AuthenticateController } from './controllers/authenticate.controller.js';
+import { QuestionsController } from './controllers/create-question.controller.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -18,6 +19,6 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     AuthModule,
   ],
   providers: [PrismaService],
-  controllers: [CreateAccountController, AuthenticateController],
+  controllers: [CreateAccountController, AuthenticateController, QuestionsController],
 })
 export class AppModule {}
