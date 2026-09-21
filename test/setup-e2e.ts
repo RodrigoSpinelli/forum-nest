@@ -4,12 +4,6 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { randomUUID } from 'node:crypto';
 import { execSync } from 'node:child_process';
 
-const prisma = new PrismaClient({
-  adapter: new PrismaPg({
-    connectionString: process.env.DATABASE_URL,
-  }),
-});
-
 function generateUniqueDataBaseURL(schemaId: string) {
   if (!process.env.DATABASE_URL) {
     throw new Error('Please provider a DATABASE_URL environment variable.');
@@ -21,18 +15,27 @@ function generateUniqueDataBaseURL(schemaId: string) {
 
   return url.toString();
 }
+
 const schemaId = randomUUID();
+let prisma: PrismaClient;
+
 beforeAll(async () => {
   const databaseURL = generateUniqueDataBaseURL(schemaId);
 
   process.env.DATABASE_URL = databaseURL;
+  process.env.DATABASE_SCHEMA = schemaId;
+
+  prisma = new PrismaClient({
+    adapter: new PrismaPg(
+      { connectionString: databaseURL },
+      { schema: schemaId },
+    ),
+  });
 
   execSync('pnpm prisma migrate deploy');
-
-  console.log(databaseURL);
 });
 
 afterAll(async () => {
   await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId}" CASCADE`);
-  await prisma.$disconnect()
+  await prisma.$disconnect();
 });
